@@ -8,10 +8,11 @@ import java.util.UUID;
  *
  * @author Administrativo
  */
-public record DepartamentoRecord(
+public record CentroCustoDTO(
         UUID id,
         @NotNull
         @Size(max = 255)
-        String nome) {
+        String nome,
+        UUID empresa) {
 
 }

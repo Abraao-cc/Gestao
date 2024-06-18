@@ -1,15 +1,20 @@
-
 package com.timuila.gestao.services.imp;
 
-import com.timuila.gestao.dominio.Funcionario;
-import com.timuila.gestao.dtos.FuncionarioRecord;
+import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.dtos.PessoaJuridicaDTO;
+import com.timuila.gestao.dtos.PessoaJuridicaResponseDTO;
+import com.timuila.gestao.repositorys.PessoaJuridicaRepository;
 import com.timuila.gestao.services.PessoaJuridicaService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.timuila.gestao.util.NotFoundException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,51 +23,82 @@ import org.springframework.stereotype.Service;
 @Service
 public class PessoaJuridicaImp implements PessoaJuridicaService {
 
-    @Override
-    public Map<UUID, String> funcionarios() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private final PessoaJuridicaRepository pessoaJuridicaRepository;
+
+    public PessoaJuridicaImp(PessoaJuridicaRepository pessoaJuridicaRepository) {
+        this.pessoaJuridicaRepository = pessoaJuridicaRepository;
     }
 
     @Override
-    public Map<String, Object> buscarTodos(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public PessoaJuridica save(PessoaJuridicaDTO pessoaJuridicaDTO) {
+        PessoaJuridica pessoaJuridica = this.toEntity(pessoaJuridicaDTO);
+        validarAtributos(pessoaJuridica);
+        if (pessoaJuridicaDTO.id() == null) {
+            return pessoaJuridicaRepository.save(pessoaJuridica);
+        }
+
+        return update(pessoaJuridicaDTO);
+    }
+
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    protected PessoaJuridica update(PessoaJuridicaDTO dto) {
+        PessoaJuridica pessoaJuridica = pessoaJuridicaRepository.findByCnpj(dto.cnpj()).get();
+        pessoaJuridica.setId(dto.id());
+        pessoaJuridica.setNome(dto.nome());
+        pessoaJuridica.setNome(dto.nome());
+        pessoaJuridica.setSobrenome(dto.sobrenome());
+        pessoaJuridica.setNascimento(dto.abertura());
+        pessoaJuridica.setCnpj(dto.cnpj());
+        pessoaJuridica.setIe(dto.ie());
+        pessoaJuridica.setIm(dto.im());
+
+        return pessoaJuridicaRepository.save(pessoaJuridica);
+
+    }
+
+    private void validarAtributos(PessoaJuridica pj) {
+        Optional<PessoaJuridica> pessoaJuridica = pessoaJuridicaRepository.findByCnpj(pj.getCnpj());
+        if (pessoaJuridica.isPresent() && !Objects.equals(pessoaJuridica.get().getId(), pj.getId())) {
+            throw new DataIntegrityViolationException("clt já cadastro no sistema!");
+        }
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PessoaJuridica buscarPessoaJuridicaPorId(UUID id) {
+        return pessoaJuridicaRepository.findById(id).get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PessoaJuridica> list() {
+        List<PessoaJuridica> pessoasJuridicas = pessoaJuridicaRepository.findAll(Sort.by("id"));
+        return pessoasJuridicas;
     }
 
     @Override
     public void delete(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //pessoaJuridicaRepository.delete(pessoaJuridicaRepository.findById(id).orElseThrow(() -> new NotFoundException(id + " este id não consta no bd! ")));
+        pessoaJuridicaRepository.delete(pessoaJuridicaRepository.findById(id).orElseThrow(() -> new NotFoundException(id + " este id não consta no bd! ")));
     }
 
-    @Override
-    public List<FuncionarioRecord> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    protected PessoaJuridicaDTO toDTO(PessoaJuridica pessoaJuridica) {
+
+        return new PessoaJuridicaDTO(pessoaJuridica.getId(),pessoaJuridica.getNome(), pessoaJuridica.getSobrenome(), pessoaJuridica.getNascimento(), pessoaJuridica.getCnpj(), pessoaJuridica.getIe(), pessoaJuridica.getIm());
     }
 
-    @Override
-    public Set<Funcionario> funcionarioString(Set<String> funcionarosString) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    protected PessoaJuridica toEntity(PessoaJuridicaDTO pessoaJuridicaDTO) {
+        PessoaJuridica pessoaJuridica = new PessoaJuridica();
+       pessoaJuridica.setId(pessoaJuridicaDTO.id());
+        pessoaJuridica.setNome(pessoaJuridicaDTO.nome());
+        pessoaJuridica.setSobrenome(pessoaJuridicaDTO.sobrenome());
+        pessoaJuridica.setNascimento(pessoaJuridicaDTO.abertura());
+        pessoaJuridica.setCnpj(pessoaJuridicaDTO.cnpj());
+        pessoaJuridica.setIe(pessoaJuridicaDTO.ie());
+        pessoaJuridica.setIm(pessoaJuridicaDTO.im());
+        return pessoaJuridica;
     }
-
-    @Override
-    public FuncionarioRecord buscarFuncionarioPorId(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public FuncionarioRecord buscarFuncionarioPorNome(String nome) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public UUID save(FuncionarioRecord funcionario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public long countById() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-  
 
 }

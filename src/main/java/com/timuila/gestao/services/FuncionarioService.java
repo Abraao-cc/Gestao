@@ -1,11 +1,9 @@
 package com.timuila.gestao.services;
 
 import com.timuila.gestao.dominio.Funcionario;
-import com.timuila.gestao.dtos.FuncionarioRecord;
-import jakarta.servlet.http.HttpServletRequest;
+import com.timuila.gestao.dtos.FuncionarioDTO;
+import com.timuila.gestao.dtos.FuncionarioResponseDTO;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -14,21 +12,17 @@ import java.util.UUID;
  */
 public interface FuncionarioService {
 
-    Map<UUID, String> funcionarios();
+    Funcionario save(FuncionarioDTO funcionario);
 
-    Map<String, Object> buscarTodos(HttpServletRequest request);
+    List<FuncionarioResponseDTO> list();
+
+    Funcionario buscarFuncionarioPorId(UUID id);
 
     void delete(final UUID id);
+    //Map<UUID, String> funcionarios();
 
-    List<FuncionarioRecord> list();
-
-    Set<Funcionario> funcionarioString(Set<String> funcionarosString);
-
-    FuncionarioRecord buscarFuncionarioPorId(UUID id);
-
-    FuncionarioRecord buscarFuncionarioPorNome(String nome);
-
-    UUID save(FuncionarioRecord funcionario);
-
-    long countById();
+    //Map<String, Object> buscarTodos(HttpServletRequest request);
+    // Set<Funcionario> funcionarioString(Set<String> funcionarosString);
+    //FuncionarioDTO buscarFuncionarioPorNome(String nome);
+    // long countById();
 }

@@ -7,7 +7,8 @@ import com.timuila.gestao.dominio.Cargo;
 import com.timuila.gestao.dominio.CentroCusto;
 import com.timuila.gestao.dominio.Departamento;
 import com.timuila.gestao.dominio.Funcionario;
-import com.timuila.gestao.dtos.FuncionarioRecord;
+import com.timuila.gestao.dtos.FuncionarioDTO;
+import com.timuila.gestao.dtos.FuncionarioResponseDTO;
 import com.timuila.gestao.emuns.EstadoCivil;
 import com.timuila.gestao.emuns.Genero;
 import com.timuila.gestao.repositorys.FuncionarioRepository;
@@ -38,27 +39,44 @@ public class FuncionarioServiceImp implements FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final Datatables datatables;
-   // private final DepartamentoRepository departamentoRepository;
+    // private final DepartamentoRepository departamentoRepository;
     //private final CargoRepository cargoRepository;
-   // private final CentroCustoRepository centroCustoRepository;
+    // private final CentroCustoRepository centroCustoRepository;
 
     public FuncionarioServiceImp(FuncionarioRepository funcionarioRepository, Datatables datatables) {
         this.funcionarioRepository = funcionarioRepository;
         this.datatables = datatables;
     }
 
-  
-
     @Override
     @Transactional(readOnly = true)
-    public List<FuncionarioRecord> list() {
+    public List<FuncionarioResponseDTO> list() {
 
         List<Funcionario> funcionarios = funcionarioRepository.findAll(Sort.by("id"));
-        return funcionarios.stream().map(this::toDTO).collect(Collectors.toList());
+        return funcionarios.stream().map(funcionario-> new FuncionarioResponseDTO(
+                funcionario.getId(),
+                funcionario.getNome(),
+                funcionario.getSobrenome(),
+                funcionario.getNascimento(),
+                funcionario.getCpf(),
+                funcionario.getRg(),
+                funcionario.getAdmissao(),
+                funcionario.getDemissao(),
+                funcionario.getMae(),
+                funcionario.getPai(),
+                funcionario.getGenero().getValue(),
+                funcionario.getEstado_civil().getValue(),
+                funcionario.getNaturalidade(), 
+                funcionario.getClt(),
+                funcionario.getCargo().getId(),
+                funcionario.getDepartamento().getId(),
+                funcionario.getCentro().getId()
+        )
+        ).collect(Collectors.toList());
 
     }
 
-    @Override
+    // @Override
     @Transactional(readOnly = true)
     public Map<UUID, String> funcionarios() {
 
@@ -70,19 +88,19 @@ public class FuncionarioServiceImp implements FuncionarioService {
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public UUID save(FuncionarioRecord funcionarioDTO) {
+    public Funcionario save(FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = this.toEntity(funcionarioDTO);
         validarAtributos(funcionario);
         if (funcionarioDTO.id() == null) {
-            return funcionarioRepository.save(funcionario).getId();
+            return funcionarioRepository.save(funcionario);
         }
 
-        return update(funcionarioDTO).id();
+        return update(funcionarioDTO);
 
     }
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    protected FuncionarioRecord update(FuncionarioRecord dto) {
+    protected Funcionario update(FuncionarioDTO dto) {
         Funcionario funcionario = funcionarioRepository.findById(dto.id()).get();
         funcionario.setNome(dto.nome());
         funcionario.setId(dto.id());
@@ -103,19 +121,19 @@ public class FuncionarioServiceImp implements FuncionarioService {
         funcionario.setCargo(new Cargo(dto.cargo()));
         funcionario.setDepartamento(new Departamento(dto.departamento()));
         funcionario.setCentro(new CentroCusto(dto.centro()));
-        return this.toDTO(funcionarioRepository.save(funcionario));
+        return funcionarioRepository.save(funcionario);
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public FuncionarioRecord buscarFuncionarioPorId(UUID id) {
-        return funcionarioRepository.findById(id).map(funcionario -> this.toDTO(funcionario)).get();
+    public Funcionario buscarFuncionarioPorId(UUID id) {
+        return funcionarioRepository.findById(id).get();
     }
 
-    @Override
+    // @Override
     @Transactional(readOnly = true)
-    public FuncionarioRecord buscarFuncionarioPorNome(String nome) {
+    public FuncionarioDTO buscarFuncionarioPorNome(String nome) {
 
         return funcionarioRepository.findByClt(nome).map(funcionario -> this.toDTO(funcionario)).get();
     }
@@ -139,7 +157,7 @@ public class FuncionarioServiceImp implements FuncionarioService {
 
     }
 
-    @Override
+    // @Override
     public Map<String, Object> buscarTodos(HttpServletRequest request) {
         datatables.setRequest(request);
         datatables.setColunas(DatatablesColunas.FUNCIONARIO);
@@ -148,7 +166,7 @@ public class FuncionarioServiceImp implements FuncionarioService {
         return datatables.getResponse(page);
     }
 
-    @Override
+    //@Override
     public long countById() {
         return funcionarioRepository.count();
     }
@@ -157,7 +175,7 @@ public class FuncionarioServiceImp implements FuncionarioService {
         return (dto == null ? LocalDate.now() : dto);
     }
 
-    @Override
+    //@Override
     @Transactional(readOnly = true)
     public Set<Funcionario> funcionarioString(Set<String> funcionarosString) {
         Set<Funcionario> funcionarios = new HashSet<>();
@@ -171,15 +189,15 @@ public class FuncionarioServiceImp implements FuncionarioService {
 
     }
 
-    protected FuncionarioRecord toDTO(Funcionario funcionario) {
+    protected FuncionarioDTO toDTO(Funcionario funcionario) {
         UUID cargo = (funcionario.getCargo().getId() == null) ? null : funcionario.getCargo().getId();
         UUID departamento = (funcionario.getDepartamento().getId() == null) ? null : funcionario.getDepartamento().getId();
         UUID centro = (funcionario.getCentro().getId() == null) ? null : funcionario.getCentro().getId();
-        return new FuncionarioRecord(funcionario.getId(), funcionario.getNome(), funcionario.getSobrenome(), funcionario.getNascimento(), funcionario.getCpf(), funcionario.getRg(), funcionario.getMae(), funcionario.getPai(), funcionario.getGenero().getValue(), funcionario.getEstado_civil().getValue(), funcionario.getNaturalidade(), funcionario.getClt(), cargo, departamento, centro);
+        return new FuncionarioDTO(funcionario.getId(), funcionario.getNome(), funcionario.getSobrenome(), funcionario.getNascimento(), funcionario.getCpf(), funcionario.getRg(), funcionario.getMae(), funcionario.getPai(), funcionario.getGenero().getValue(), funcionario.getEstado_civil().getValue(), funcionario.getNaturalidade(), funcionario.getClt(), cargo, departamento, centro);
 
     }
 
-    protected Funcionario toEntity(FuncionarioRecord dto) {
+    protected Funcionario toEntity(FuncionarioDTO dto) {
         Funcionario funcionario = new Funcionario();
         funcionario.setId(dto.id());
         funcionario.setNome(dto.nome());

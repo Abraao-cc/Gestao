@@ -4,7 +4,7 @@ import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
 import com.timuila.gestao.dominio.Endereco;
 import com.timuila.gestao.dominio.Pessoa;
-import com.timuila.gestao.dtos.EnderecoRecord;
+import com.timuila.gestao.dtos.EnderecoDTO;
 import com.timuila.gestao.repositorys.EnderecoRepository;
 import com.timuila.gestao.repositorys.PessoaRepository;
 import com.timuila.gestao.services.EnderecoService;
@@ -40,13 +40,13 @@ public class EnderecoServiceImp implements EnderecoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EnderecoRecord> list(Pageable pageable) {
+    public List<EnderecoDTO> list(Pageable pageable) {
         return enderecoRepository.searchAll(pageable).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = false)
-    public EnderecoRecord salvar(EnderecoRecord enderecoDTO) {
+    public EnderecoDTO salvar(EnderecoDTO enderecoDTO) {
         if (enderecoDTO.id() == null) {
             Endereco endereco = this.toEntity(enderecoDTO);
             validarAtributos(endereco);
@@ -60,7 +60,7 @@ public class EnderecoServiceImp implements EnderecoService {
     }
 
     @Transactional(readOnly = false)
-    public EnderecoRecord update(EnderecoRecord dto) {
+    public EnderecoDTO update(EnderecoDTO dto) {
 
         Endereco endereco = enderecoRepository.findById(dto.id()).get();
 
@@ -79,13 +79,13 @@ public class EnderecoServiceImp implements EnderecoService {
 
     @Transactional(readOnly = true)
     @Override
-    public EnderecoRecord buscarPorCep(String cep) {
+    public EnderecoDTO buscarPorCep(String cep) {
         return enderecoRepository.findByCep(cep).map(this::toDTO).get();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EnderecoRecord criar(UUID pessoa_id) {
+    public EnderecoDTO criar(UUID pessoa_id) {
 
         Optional<Endereco> endereco = enderecoRepository.findByPessoaId(pessoa_id);
         if (endereco.isEmpty() || endereco.get().getId() == null) {
@@ -109,7 +109,7 @@ public class EnderecoServiceImp implements EnderecoService {
 
     @Override
     @Transactional(readOnly = true)
-    public EnderecoRecord buscarEnderecoPorId(UUID id) {
+    public EnderecoDTO buscarEnderecoPorId(UUID id) {
         return enderecoRepository.findById(id).map(this::toDTO).get();
     }
 
@@ -134,14 +134,14 @@ public class EnderecoServiceImp implements EnderecoService {
         return pessoaService.existsById(id);
     }
 
-    protected EnderecoRecord toDTO(Endereco e) {
+    protected EnderecoDTO toDTO(Endereco e) {
 
         String pessoa = (e.getPessoa().getId() == null) ? null : e.getPessoa().getNome();
 
-        return new EnderecoRecord(e.getId(), e.getUf(), e.getCidade(), e.getBairro(), e.getRua(), e.getCep(), e.getNumero(), e.getComplemento(), pessoa);
+        return new EnderecoDTO(e.getId(), e.getUf(), e.getCidade(), e.getBairro(), e.getRua(), e.getCep(), e.getNumero(), e.getComplemento(), pessoa);
     }
 
-    protected Endereco toEntity(EnderecoRecord dto) {
+    protected Endereco toEntity(EnderecoDTO dto) {
         Endereco endereco = new Endereco();
         endereco.setUf(dto.uf());
         endereco.setCidade(dto.cidade());

@@ -1,8 +1,9 @@
-
 package com.timuila.gestao.services.imp;
+
 import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
 import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.dtos.CargoDTO;
 import com.timuila.gestao.repositorys.CargoRepository;
 import com.timuila.gestao.services.CargoService;
 import com.timuila.gestao.util.CustomCollectors;
@@ -34,9 +35,6 @@ public class CargoServiceImp implements CargoService {
         this.cr = cr;
         this.datatables = datatables;
     }
-   
-    
-      
 
     @Override
     @Transactional(readOnly = true)
@@ -56,21 +54,20 @@ public class CargoServiceImp implements CargoService {
     @Override
     @Transactional(readOnly = true)
     public Cargo findById(UUID id) {
-        return cr.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id)+ " Este id não consta no bd! "));
+        return cr.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id) + " Este id não consta no bd! "));
     }
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void salvar(Cargo cargo) {
-        cargo.getId();
+    public Cargo save(CargoDTO dto) {
+        Cargo cargo = this.toEntity(dto);
         validarAtributos(cargo);
 
-        if (cargo.getId() == null) {
-
-            cr.save(cargo);
+        if (dto.id() == null) {
+            return cr.save(cargo);
         }
 
-        update(cargo);
+        return update(cargo);
     }
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -90,7 +87,7 @@ public class CargoServiceImp implements CargoService {
 
     @Override
     public void delete(UUID id) {
-        cr.delete(cr.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id)+ " Este id não consta no bd! ")));
+        cr.delete(cr.findById(id).orElseThrow(() -> new NotFoundException(String.valueOf(id) + " Este id não consta no bd! ")));
     }
 
     private void validarAtributos(Cargo c) {
@@ -115,16 +112,18 @@ public class CargoServiceImp implements CargoService {
                 : cr.searchAll(datatables.getSearch(), datatables.getPageable());
         return datatables.getResponse(page);
     }
-    
-    /** public String getReferencedWarning(final Long id) {
-        final Cargo cargo = cr.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final Funcionario cargoFuncionario = funcionarioService.findFirstByCargo(cargo);
-        if (cargoFuncionario != null) {
-            return WebUtils.getMessage("cargo.funcionario.cargo.referenced", cargoFuncionario.getId());
-        }
-        return null;
-    }**/
+
+    protected CargoDTO toDTO(Cargo cargo) {
+
+        return new CargoDTO(cargo.getId(), cargo.getNome(), cargo.getSalario());
+    }
+
+    protected Cargo toEntity(CargoDTO dto) {
+        Cargo cargo = new Cargo();
+        cargo.setId(dto.id());
+        cargo.setNome(dto.nome());
+        cargo.setSalario(dto.salario());
+        return cargo;
+    }
 
 }
-

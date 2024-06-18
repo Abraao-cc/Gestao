@@ -4,7 +4,7 @@ import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
 import com.timuila.gestao.dominio.CentroCusto;
 import com.timuila.gestao.dominio.PessoaJuridica;
-import com.timuila.gestao.dtos.CentroCustoRecord;
+import com.timuila.gestao.dtos.CentroCustoDTO;
 import com.timuila.gestao.repositorys.CentroCustoRepository;
 import com.timuila.gestao.services.CentroCustoService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,65 +24,64 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CentroCustoServiceImp implements CentroCustoService {
-    
+
     private final CentroCustoRepository centroCustoRepository;
     private final Datatables datatables;
-    
+
     public CentroCustoServiceImp(CentroCustoRepository centroCustoRepository, Datatables datatables) {
         this.centroCustoRepository = centroCustoRepository;
-        
+
         this.datatables = datatables;
     }
-    
+
     @Override
-    public List<CentroCustoRecord> findAll() {
-        
-        List<CentroCusto> centroCustos = centroCustoRepository.findAll(Sort.by("id"));
-        return centroCustos.stream().map(this::toDTO).toList();
+    public List<CentroCusto> getCentroCustos() {
+
+        return centroCustoRepository.findAll(Sort.by("id"));
     }
-    
+
     @Override
-    public UUID create(CentroCustoRecord centroCustoDTO) {
+    public CentroCusto save(CentroCustoDTO centroCustoDTO) {
         CentroCusto centroCusto = this.toEntity(centroCustoDTO);
-        
+
         validarAtributos(centroCusto);
         if (centroCustoDTO.id() == null) {
-            return centroCustoRepository.save(centroCusto).getId();
+            return centroCustoRepository.save(centroCusto);
         }
-        
+
         return update(centroCustoDTO);
     }
-    
-    private UUID update(CentroCustoRecord centroCustoDTO) {
+
+    private CentroCusto update(CentroCustoDTO centroCustoDTO) {
         CentroCusto centroCusto = centroCustoRepository.findById(centroCustoDTO.id()).get();
         centroCusto.setNome(centroCustoDTO.nome());
         centroCusto.setId(centroCustoDTO.id());
-        return centroCustoRepository.save(centroCusto).getId();
+        return centroCustoRepository.save(centroCusto);
     }
-    
+
     @Override
-    public CentroCustoRecord get(UUID id) {
+    public CentroCustoDTO get(UUID id) {
         return centroCustoRepository.findById(id).map(this::toDTO).get();
     }
-    
+
     private void validarAtributos(CentroCusto c) {
         Optional<CentroCusto> centroCusto = centroCustoRepository.findByNome(c.getNome());
         if (centroCusto.isPresent() && !Objects.equals(centroCusto.get().getId(), c.getId())) {
             throw new DataIntegrityViolationException("nome já cadastro no sistema!");
         }
-        
+
     }
-    
+
     @Override
     public void delete(UUID id) {
         centroCustoRepository.deleteById(id);
     }
-    
+
     @Override
     public boolean nomeExists(String nome) {
         return centroCustoRepository.existsByNomeIgnoreCase(nome);
     }
-    
+
     public String getReferencedWarning(Long id) {
         /**
          * CentroCusto centroCusto = centroCustoRepository.findById(id).get();
@@ -94,7 +93,7 @@ public class CentroCustoServiceImp implements CentroCustoService {
          */
         return null;
     }
-    
+
     @Override
     public Map<String, Object> buscarTodos(HttpServletRequest request) {
         datatables.setRequest(request);
@@ -103,25 +102,24 @@ public class CentroCustoServiceImp implements CentroCustoService {
                 : centroCustoRepository.searchAll(datatables.getSearch(), datatables.getPageable());
         return datatables.getResponse(page);
     }
-    
+
     @Override
     public CentroCusto findByNome(String nome) {
         return centroCustoRepository.findByNome(nome).get();
-        
-        
+
     }
-    
-    protected CentroCustoRecord toDTO(CentroCusto centroCusto) {
+
+    protected CentroCustoDTO toDTO(CentroCusto centroCusto) {
         UUID empresa = (centroCusto.getEmpresa().getId() == null) ? null : centroCusto.getEmpresa().getId();
-        return new CentroCustoRecord(centroCusto.getId(), centroCusto.getNome(), empresa);
-        
+        return new CentroCustoDTO(centroCusto.getId(), centroCusto.getNome(), empresa);
+
     }
-    
-    protected CentroCusto toEntity(CentroCustoRecord dto) {
+
+    protected CentroCusto toEntity(CentroCustoDTO dto) {
         CentroCusto centro = new CentroCusto();
         centro.setNome(dto.nome());
         centro.setEmpresa(new PessoaJuridica(dto.empresa()));
         return centro;
     }
-    
+
 }

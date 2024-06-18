@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  * @author Administrativo
  */
-public record FuncionarioRecord(
+public record FuncionarioDTO(
         UUID id,
         String nome,
         @NotNull

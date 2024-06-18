@@ -10,7 +10,7 @@ import org.springframework.format.annotation.NumberFormat;
  *
  * @author Administrativo
  */
-public record CargoRecord(
+public record CargoDTO(
         UUID id,
         @NotNull
         @Size(max = 255)

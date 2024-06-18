@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dtos.EnderecoRecord;
+import com.timuila.gestao.dtos.EnderecoDTO;
 import com.timuila.gestao.dtos.TelefoneRecord;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

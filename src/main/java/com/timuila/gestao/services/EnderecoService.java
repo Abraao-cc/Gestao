@@ -2,8 +2,8 @@ package com.timuila.gestao.services;
 
 import com.timuila.gestao.dominio.CentroCusto;
 import com.timuila.gestao.dominio.Endereco;
-import com.timuila.gestao.dtos.CentroCustoRecord;
-import com.timuila.gestao.dtos.EnderecoRecord;
+import com.timuila.gestao.dtos.CentroCustoDTO;
+import com.timuila.gestao.dtos.EnderecoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -16,19 +16,19 @@ import org.springframework.data.domain.Pageable;
  */
 public interface EnderecoService {
 
-    EnderecoRecord salvar(EnderecoRecord enderecoDTO);
+    EnderecoDTO salvar(EnderecoDTO enderecoDTO);
 
     void delete(UUID id);
 
     Map<String, Object> buscarTodos(HttpServletRequest request);
 
-    List<EnderecoRecord> list(Pageable pageable);
+    List<EnderecoDTO> list(Pageable pageable);
 
-    EnderecoRecord buscarEnderecoPorId(UUID id);
+    EnderecoDTO buscarEnderecoPorId(UUID id);
 
-    EnderecoRecord criar(UUID pessoa_id);
+    EnderecoDTO criar(UUID pessoa_id);
 
-    EnderecoRecord buscarPorCep(String cep);
+    EnderecoDTO buscarPorCep(String cep);
 
     boolean pessoaExists(final UUID id);
 

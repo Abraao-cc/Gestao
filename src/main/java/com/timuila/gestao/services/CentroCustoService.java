@@ -1,7 +1,7 @@
 package com.timuila.gestao.services;
 
 import com.timuila.gestao.dominio.CentroCusto;
-import com.timuila.gestao.dtos.CentroCustoRecord;
+import com.timuila.gestao.dtos.CentroCustoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +13,11 @@ import java.util.UUID;
  */
 public interface CentroCustoService {
 
-    List<CentroCustoRecord> findAll();
+    CentroCusto save(CentroCustoDTO centroCustoDTO);
 
-    CentroCustoRecord get(UUID id);
+    List<CentroCusto> getCentroCustos();
 
-    UUID create(CentroCustoRecord centroCustoDTO);
+    CentroCustoDTO get(UUID id);
 
     void delete(UUID id);
 

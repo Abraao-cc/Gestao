@@ -8,7 +8,7 @@ import java.util.UUID;
  *
  * @author Administrativo
  */
-public record EnderecoRecord(
+public record EnderecoDTO(
         UUID id,
         @NotBlank
         @NotNull

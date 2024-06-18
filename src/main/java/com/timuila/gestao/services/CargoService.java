@@ -1,6 +1,7 @@
-
 package com.timuila.gestao.services;
+
 import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.dtos.CargoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ import java.util.UUID;
  * @author ti
  */
 public interface CargoService {
-    
-    void salvar(Cargo c);
+
+    Cargo save(CargoDTO c);
 
     Map<UUID, String> cargos();
 

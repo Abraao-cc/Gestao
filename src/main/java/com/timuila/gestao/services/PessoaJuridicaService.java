@@ -1,11 +1,8 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Funcionario;
-import com.timuila.gestao.dtos.FuncionarioRecord;
-import jakarta.servlet.http.HttpServletRequest;
+import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.dtos.PessoaJuridicaDTO;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -14,21 +11,18 @@ import java.util.UUID;
  */
 public interface PessoaJuridicaService {
 
-    Map<UUID, String> funcionarios();
+    PessoaJuridica save(PessoaJuridicaDTO pessoaJuridica);
 
-    Map<String, Object> buscarTodos(HttpServletRequest request);
+    PessoaJuridica buscarPessoaJuridicaPorId(UUID id);
+
+    List<PessoaJuridica> list();
+   // List<PessoaJuridicaResponseDTO> list();
 
     void delete(final UUID id);
 
-    List<FuncionarioRecord> list();
-
-    Set<Funcionario> funcionarioString(Set<String> funcionarosString);
-
-    FuncionarioRecord buscarFuncionarioPorId(UUID id);
-
-    FuncionarioRecord buscarFuncionarioPorNome(String nome);
-
-    UUID save(FuncionarioRecord funcionario);
-
-    long countById();
+    // long countById();
+    //Map<UUID, String> getPessoaSJudiricas();
+    //Map<String, Object> buscarTodos(HttpServletRequest request);
+    //Set<PessoaJuridicaDTO> pessoaJuridicaString(Set<String> funcionarosString);
+    //PessoaJuridicaDTO buscarPessoaJuridicaPorNome(String nome);
 }
