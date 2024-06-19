@@ -1,4 +1,4 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.timuila.gestao.base.Entidade;
 import com.timuila.gestao.convert.TipoTelefoneConvert;
@@ -27,7 +27,7 @@ public class Telefone extends Entidade {
     @Convert(converter = TipoTelefoneConvert.class)
     private TipoTelefone tipo;
     @ManyToOne
-    @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
     public String getNumero() {
@@ -50,12 +50,16 @@ public class Telefone extends Entidade {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    //public void setPessoa(Pessoa pessoa) {
 
-        this.pessoa = pessoa;
-        if (!pessoa.getTelefones().contains(this)) { // warning this may cause performance issues if you have a large data set since this operation is O(n)
-            pessoa.getTelefones().add(this);
-        }
+      
+        //if (!pessoa.getTelefones().contains(this)) { // warning this may cause performance issues if you have a large data set since this operation is O(n)
+           // pessoa.getTelefones().add(this);
+       // }
+       // this.pessoa = pessoa;
+    //}
+
+    public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 

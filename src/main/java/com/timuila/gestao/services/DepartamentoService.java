@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Departamento;
+import com.timuila.gestao.domain.Departamento;
 import com.timuila.gestao.dtos.DepartamentoDTO;
 import java.util.List;
 import java.util.Map;

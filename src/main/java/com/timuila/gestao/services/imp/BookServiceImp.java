@@ -1,7 +1,7 @@
 package com.timuila.gestao.services.imp;
 
-import com.timuila.gestao.dominio.Book;
-import com.timuila.gestao.dominio.Review;
+import com.timuila.gestao.domain.Book;
+import com.timuila.gestao.domain.Review;
 import com.timuila.gestao.dtos.BookRecord;
 import com.timuila.gestao.repositorys.AutorRepository;
 import com.timuila.gestao.repositorys.BookRepository;

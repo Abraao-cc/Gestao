@@ -2,7 +2,7 @@ package com.timuila.gestao.services.imp;
 
 import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
-import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.domain.Cargo;
 import com.timuila.gestao.dtos.CargoDTO;
 import com.timuila.gestao.repositorys.CargoRepository;
 import com.timuila.gestao.services.CargoService;

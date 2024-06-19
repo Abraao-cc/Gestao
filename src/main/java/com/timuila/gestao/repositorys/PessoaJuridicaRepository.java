@@ -1,6 +1,6 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.domain.PessoaJuridica;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Book;
+import com.timuila.gestao.domain.Book;
 import com.timuila.gestao.dtos.BookRecord;
 import java.util.List;
 import java.util.UUID;

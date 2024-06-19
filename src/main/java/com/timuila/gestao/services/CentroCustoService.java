@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.CentroCusto;
+import com.timuila.gestao.domain.CentroCusto;
 import com.timuila.gestao.dtos.CentroCustoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

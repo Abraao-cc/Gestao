@@ -1,7 +1,7 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dtos.EnderecoDTO;
-import com.timuila.gestao.dtos.TelefoneRecord;
+import com.timuila.gestao.domain.Telefone;
+import com.timuila.gestao.dtos.TelefoneDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +14,20 @@ import org.springframework.data.domain.Pageable;
  */
 public interface TelefoneService {
 
-    TelefoneRecord criar(UUID pessoa_id, TelefoneRecord telefone);
+    TelefoneDTO criar(UUID pessoa_id, TelefoneDTO telefone);
 
-    UUID salvar(TelefoneRecord telefone);
+    Telefone save(TelefoneDTO telefone);
 
-    TelefoneRecord buscarTelefonePorId(UUID id);
+    TelefoneDTO buscarTelefonePorId(UUID id);
 
     void delete(UUID id);
 
     Map<String, Object> buscarTodos(HttpServletRequest request);
 
-    TelefoneRecord buscarPorNumero(String numero);
+    TelefoneDTO buscarPorNumero(String numero);
 
-    List<TelefoneRecord> list(Pageable pageable);
+    List<Telefone> getTelefones();
+
+    List<TelefoneDTO> list(Pageable pageable);
 
 }

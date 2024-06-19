@@ -1,10 +1,9 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.timuila.gestao.base.Entidade;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -35,7 +34,7 @@ public class Endereco extends Entidade {
     private String complemento;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne
-    @JoinColumn(name = "pessoa_id", nullable = false, unique = true)
+    @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
     public Endereco() {
@@ -120,4 +119,23 @@ public class Endereco extends Entidade {
         this.pessoa = pessoa;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Endereco{");
+        sb.append("uf=").append(uf);
+        sb.append(", cidade=").append(cidade);
+        sb.append(", bairro=").append(bairro);
+        sb.append(", rua=").append(rua);
+        sb.append(", cep=").append(cep);
+        sb.append(", numero=").append(numero);
+        sb.append(", complemento=").append(complemento);
+        sb.append(", pessoa=").append(pessoa);
+        sb.append('}');
+        return sb.toString();
+    }
+
+   
+
+   
 }

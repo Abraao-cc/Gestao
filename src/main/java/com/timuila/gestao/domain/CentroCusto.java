@@ -1,7 +1,8 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.timuila.gestao.base.Entidade;
+import com.timuila.gestao.domain.PessoaJuridica;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

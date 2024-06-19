@@ -1,6 +1,6 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Book;
+import com.timuila.gestao.domain.Book;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

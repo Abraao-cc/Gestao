@@ -1,5 +1,5 @@
 package com.timuila.gestao.projections;
-import com.timuila.gestao.dominio.Pessoa;
+import com.timuila.gestao.domain.Pessoa;
 
 /**
  *

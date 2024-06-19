@@ -1,6 +1,6 @@
 package com.timuila.gestao.controlle;
 
-import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.domain.Cargo;
 import com.timuila.gestao.dtos.CargoDTO;
 import com.timuila.gestao.services.CargoService;
 import java.util.List;

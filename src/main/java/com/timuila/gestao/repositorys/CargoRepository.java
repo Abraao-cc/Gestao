@@ -1,6 +1,6 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.domain.Cargo;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;

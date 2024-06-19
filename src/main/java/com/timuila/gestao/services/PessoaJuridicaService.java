@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.domain.PessoaJuridica;
 import com.timuila.gestao.dtos.PessoaJuridicaDTO;
 import java.util.List;
 import java.util.UUID;

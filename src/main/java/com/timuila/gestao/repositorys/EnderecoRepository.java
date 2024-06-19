@@ -1,7 +1,7 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Endereco;
-import com.timuila.gestao.dominio.Pessoa;
+import com.timuila.gestao.domain.Endereco;
+import com.timuila.gestao.domain.Pessoa;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

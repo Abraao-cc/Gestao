@@ -1,6 +1,6 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.CentroCusto;
+import com.timuila.gestao.domain.CentroCusto;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

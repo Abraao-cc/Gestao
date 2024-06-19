@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Publisher;
+import com.timuila.gestao.domain.Publisher;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Cargo;
+import com.timuila.gestao.domain.Cargo;
 import com.timuila.gestao.dtos.CargoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

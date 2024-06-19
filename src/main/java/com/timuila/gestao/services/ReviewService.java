@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Review;
+import com.timuila.gestao.domain.Review;
 import java.util.List;
 import java.util.UUID;
 

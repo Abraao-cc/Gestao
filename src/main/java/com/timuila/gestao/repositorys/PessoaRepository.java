@@ -1,7 +1,6 @@
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Pessoa;
-import java.util.Optional;
+import com.timuila.gestao.domain.Pessoa;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,5 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, UUID> {
 
-    Optional<Pessoa> findByNome(String nome);
+  
+    Pessoa findByNome(String nome);
 }

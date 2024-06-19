@@ -1,4 +1,4 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;

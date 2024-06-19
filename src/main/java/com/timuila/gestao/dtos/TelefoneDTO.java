@@ -8,7 +8,7 @@ import java.util.UUID;
  *
  * @author Administrativo
  */
-public record TelefoneRecord(
+public record TelefoneDTO(
         UUID id,
         @NotBlank
         @NotNull

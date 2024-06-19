@@ -1,8 +1,8 @@
 
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Funcionario;
-import com.timuila.gestao.dominio.Telefone;
+import com.timuila.gestao.domain.Funcionario;
+import com.timuila.gestao.domain.Telefone;
 import com.timuila.gestao.emuns.TipoTelefone;
 import com.timuila.gestao.projections.TelefoneProjecyion;
 import java.util.List;

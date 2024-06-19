@@ -1,8 +1,7 @@
 package com.timuila.gestao.services.imp;
 
-import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.domain.PessoaJuridica;
 import com.timuila.gestao.dtos.PessoaJuridicaDTO;
-import com.timuila.gestao.dtos.PessoaJuridicaResponseDTO;
 import com.timuila.gestao.repositorys.PessoaJuridicaRepository;
 import com.timuila.gestao.services.PessoaJuridicaService;
 import com.timuila.gestao.util.NotFoundException;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

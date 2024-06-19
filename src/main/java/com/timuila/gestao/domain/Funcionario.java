@@ -1,4 +1,4 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

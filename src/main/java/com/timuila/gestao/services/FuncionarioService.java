@@ -1,6 +1,6 @@
 package com.timuila.gestao.services;
 
-import com.timuila.gestao.dominio.Funcionario;
+import com.timuila.gestao.domain.Funcionario;
 import com.timuila.gestao.dtos.FuncionarioDTO;
 import com.timuila.gestao.dtos.FuncionarioResponseDTO;
 import java.util.List;

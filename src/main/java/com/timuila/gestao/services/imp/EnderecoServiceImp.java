@@ -2,8 +2,8 @@ package com.timuila.gestao.services.imp;
 
 import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
-import com.timuila.gestao.dominio.Endereco;
-import com.timuila.gestao.dominio.Pessoa;
+import com.timuila.gestao.domain.Endereco;
+import com.timuila.gestao.domain.Pessoa;
 import com.timuila.gestao.dtos.EnderecoDTO;
 import com.timuila.gestao.repositorys.EnderecoRepository;
 import com.timuila.gestao.repositorys.PessoaRepository;
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,22 +46,20 @@ public class EnderecoServiceImp implements EnderecoService {
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public EnderecoDTO salvar(EnderecoDTO enderecoDTO) {
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public Endereco save(EnderecoDTO enderecoDTO) {
         if (enderecoDTO.id() == null) {
             Endereco endereco = this.toEntity(enderecoDTO);
             validarAtributos(endereco);
-            Pessoa pessoa = pessoaService.findByNome(enderecoDTO.pessoa()).get();
-            endereco.setPessoa(pessoa);
-            return this.toDTO(enderecoRepository.save(endereco));
+            return enderecoRepository.save(endereco);
 
         }
         return update(enderecoDTO);
 
     }
 
-    @Transactional(readOnly = false)
-    public EnderecoDTO update(EnderecoDTO dto) {
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public Endereco update(EnderecoDTO dto) {
 
         Endereco endereco = enderecoRepository.findById(dto.id()).get();
 
@@ -71,10 +70,10 @@ public class EnderecoServiceImp implements EnderecoService {
         endereco.setCep(dto.cep());
         endereco.setNumero(dto.numero());
         endereco.setComplemento(dto.complemento());
-        Pessoa pessoa = pessoaService.findByNome(dto.pessoa()).get();
+        Pessoa pessoa = pessoaService.findByNome(dto.pessoa());
         endereco.setPessoa(pessoa);
 
-        return this.toDTO(enderecoRepository.save(endereco));
+        return enderecoRepository.save(endereco);
     }
 
     @Transactional(readOnly = true)
@@ -134,15 +133,16 @@ public class EnderecoServiceImp implements EnderecoService {
         return pessoaService.existsById(id);
     }
 
-    protected EnderecoDTO toDTO(Endereco e) {
+    protected EnderecoDTO toDTO(Endereco endereco) {
 
-        String pessoa = (e.getPessoa().getId() == null) ? null : e.getPessoa().getNome();
+        String pessoa = (endereco.getPessoa().getId() == null) ? null : endereco.getPessoa().getNome();
 
-        return new EnderecoDTO(e.getId(), e.getUf(), e.getCidade(), e.getBairro(), e.getRua(), e.getCep(), e.getNumero(), e.getComplemento(), pessoa);
+        return new EnderecoDTO(endereco.getId(), endereco.getUf(), endereco.getCidade(), endereco.getBairro(), endereco.getRua(), endereco.getCep(), endereco.getNumero(), endereco.getComplemento(), pessoa);
     }
 
     protected Endereco toEntity(EnderecoDTO dto) {
         Endereco endereco = new Endereco();
+        endereco.setId(dto.id());
         endereco.setUf(dto.uf());
         endereco.setCidade(dto.cidade());
         endereco.setBairro(dto.bairro());
@@ -150,8 +150,14 @@ public class EnderecoServiceImp implements EnderecoService {
         endereco.setCep(dto.cep());
         endereco.setNumero(dto.numero());
         endereco.setComplemento(dto.complemento());
-        endereco.setPessoa(new Pessoa(dto.pessoa()));
+        Pessoa pessoa = pessoaService.findByNome(dto.pessoa());
+        endereco.setPessoa(pessoa);
         return endereco;
+    }
+
+    @Override
+    public List<Endereco> getEnderecos() {
+        return enderecoRepository.findAll(Sort.by("id"));
     }
 
 }

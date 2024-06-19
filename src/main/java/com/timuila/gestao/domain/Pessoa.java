@@ -1,4 +1,4 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
@@ -18,7 +18,6 @@ import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -122,6 +121,14 @@ public class Pessoa implements Serializable {
         this.nascimento = nascimento;
     }
 
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
     public Set<Telefone> getTelefones() {
         return telefones;
     }
@@ -129,5 +136,8 @@ public class Pessoa implements Serializable {
     public void setTelefones(Set<Telefone> telefones) {
         this.telefones = telefones;
     }
+
+   
+   
 
 }

@@ -1,4 +1,4 @@
-package com.timuila.gestao.dominio;
+package com.timuila.gestao.domain;
 
 import com.timuila.gestao.emuns.EstadoCivil;
 import com.timuila.gestao.emuns.Genero;

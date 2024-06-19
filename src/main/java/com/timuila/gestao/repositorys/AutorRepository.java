@@ -1,7 +1,7 @@
 
 package com.timuila.gestao.repositorys;
 
-import com.timuila.gestao.dominio.Autor;
+import com.timuila.gestao.domain.Autor;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

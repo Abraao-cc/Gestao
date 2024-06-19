@@ -1,8 +1,7 @@
 package com.timuila.gestao.controlle;
 
-import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.domain.PessoaJuridica;
 import com.timuila.gestao.dtos.PessoaJuridicaDTO;
-import com.timuila.gestao.dtos.PessoaJuridicaResponseDTO;
 import com.timuila.gestao.services.PessoaJuridicaService;
 import java.util.List;
 import org.springframework.http.HttpStatus;

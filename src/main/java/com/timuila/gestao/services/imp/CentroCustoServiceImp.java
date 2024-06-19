@@ -2,8 +2,8 @@ package com.timuila.gestao.services.imp;
 
 import com.timuila.gestao.datatables.Datatables;
 import com.timuila.gestao.datatables.DatatablesColunas;
-import com.timuila.gestao.dominio.CentroCusto;
-import com.timuila.gestao.dominio.PessoaJuridica;
+import com.timuila.gestao.domain.CentroCusto;
+import com.timuila.gestao.domain.PessoaJuridica;
 import com.timuila.gestao.dtos.CentroCustoDTO;
 import com.timuila.gestao.repositorys.CentroCustoRepository;
 import com.timuila.gestao.services.CentroCustoService;
